@@ -1,2 +1,1 @@
-https://github.com/IPTVVlogs/MAC-/raw/505fa0e9806b955dbea5ed982d787ad864607580/malayalam.m3u
-https://github.com/hijack81/iptv/raw/399d389f0aac838e454336e93ca0c9a1d9c1fb01/PL.m3u
+https://github.com/Love4vn/love4vn/raw/89da5d9d6d329a4392889b433fdc957771c24c88/Sport.m3u
