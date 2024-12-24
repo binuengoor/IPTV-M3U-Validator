@@ -1,0 +1,25 @@
+# Python-related files
+*.pyc
+__pycache__/
+
+# Environment-related files
+env/
+venv/
+*.env
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+
+# Ignore output files
+valid_streams.m3u
+iptv_validator.log
