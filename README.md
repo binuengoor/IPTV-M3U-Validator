@@ -75,10 +75,10 @@ The script will:
 ## Example Terminal Output
 
 ```
-✅ - Mazhavil Manorama - 1920x1080
-❌ - Asianet
-✅ - Flowers TV - 1280x720
-❌ - Zee Keralam HD
+✅ - CBS News - 1920x1080
+❌ - CNN
+✅ - FS1 - 1280x720
+❌ - Willow TV
 
 Validation Summary:
   Total Streams: 50
