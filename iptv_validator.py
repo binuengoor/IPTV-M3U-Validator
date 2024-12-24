@@ -1,7 +1,12 @@
 import os
 import requests
-import av  # PyAV library
+import av
 from datetime import datetime
+import subprocess
+import faulthandler
+
+# Enable faulthandler for debugging segmentation faults
+faulthandler.enable()
 
 # File paths
 INPUT_FILE = "playlist_urls.txt"
@@ -11,13 +16,11 @@ LOG_FILE = "iptv_validator.log"
 # Timeout settings
 TIMEOUT = 30
 
-
 def initialize_log():
     """Clear and initialize the log file."""
     with open(LOG_FILE, "w") as log:
         log.write(f"IPTV Validator Log - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log.write("=" * 50 + "\n")
-
 
 def log_result(status_icon, channel_name, url, error=None, resolution=None):
     """Log a result in a clean, informative format."""
@@ -29,7 +32,6 @@ def log_result(status_icon, channel_name, url, error=None, resolution=None):
             log_line += f" - Resolution: {resolution}"
         log.write(log_line.strip() + "\n")
 
-
 def fetch_playlist(url):
     """Fetch and return the content of a playlist from a URL."""
     try:
@@ -39,7 +41,6 @@ def fetch_playlist(url):
     except requests.RequestException as e:
         log_result("❌", "Playlist Fetch", url, error=str(e))
         return None
-
 
 def parse_m3u(content):
     """Parse M3U content to extract channel names, URLs, and optional icons."""
@@ -64,25 +65,29 @@ def parse_m3u(content):
             current_icon_url = None  # Reset icon URL for next channel
     return streams
 
-
 def validate_stream(channel_name, url):
-    """Validate a stream using PyAV."""
+    """
+    Validate a stream using PyAV in a subprocess to isolate segmentation faults.
+
+    Returns:
+        (bool, str): (True, resolution) if valid, otherwise (False, error_message).
+    """
     try:
-        with av.open(url, timeout=TIMEOUT) as container:
-            # Check if video streams exist
-            video_streams = [stream for stream in container.streams if stream.type == "video"]
-            if not video_streams:
-                return False, "No video streams found"
-
-            # Check resolution
-            video_stream = video_streams[0]  # Assume first video stream
-            resolution = f"{video_stream.width}x{video_stream.height}"
+        result = subprocess.run(
+            ["python3", "validate_helper.py", url],
+            capture_output=True,
+            text=True,
+            timeout=TIMEOUT
+        )
+        if result.returncode == 0:
+            resolution = result.stdout.strip()
             return True, resolution
-    except OSError as e:  # Covers HTTP errors like 403 or inaccessible streams
-        return False, f"OSError: {e}"
+        else:
+            return False, result.stderr.strip()
+    except subprocess.TimeoutExpired:
+        return False, "Validation Timeout"
     except Exception as e:
-        return False, f"Error: {e}"
-
+        return False, f"Unknown Error: {e}"
 
 def process_playlist_file(file_path):
     """Process URLs from the input file, fetch playlists, and validate streams."""

@@ -1,1 +1,1 @@
-https://gitea.home.askbp.win/giteadmin/iptv-m3u-local-bp/raw/branch/main/problem.m3u
+https://raw.githubusercontent.com/Love4vn/love4vn/89da5d9d6d329a4392889b433fdc957771c24c88/Sport.m3u
