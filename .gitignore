@@ -20,6 +20,9 @@ Thumbs.db
 .idea/
 *.swp
 
+# Ignore input files
+playlist_urls.txt
+
 # Ignore output files
 valid_streams.m3u
 iptv_validator.log
