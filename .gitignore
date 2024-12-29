@@ -26,3 +26,5 @@ playlist_urls.txt
 # Ignore output files
 valid_streams.m3u
 iptv_validator.log
+*.m3u
+*.m3u8
